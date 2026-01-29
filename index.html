@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime TikTok Downloader - Download Otomatis</title>
+    <title>TikTok Downloader - Download Otomatis</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff6bcb;
-            --secondary: #6c5ce7;
-            --accent: #00cec9;
-            --dark: #2d3436;
-            --light: #f9f9f9;
-            --neon-pink: #ff00ff;
-            --neon-blue: #00ffff;
-            --neon-green: #00ff9d;
+            --primary: #ff0050;
+            --secondary: #00f2ea;
+            --accent: #25d366;
+            --dark: #121212;
+            --light: #ffffff;
         }
         
         * {
@@ -25,101 +21,64 @@
         }
         
         body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: var(--light);
             min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 20px;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 107, 203, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(108, 92, 231, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(0, 206, 201, 0.1) 0%, transparent 50%);
-            z-index: -1;
         }
         
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
         }
         
         header {
             text-align: center;
-            padding: 25px 0 35px;
+            padding: 20px 0 30px;
         }
         
-        .logo-container {
+        .logo {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
-        .logo-icon {
-            font-size: 3rem;
+        .logo i {
+            font-size: 2.5rem;
             color: var(--primary);
-            text-shadow: 0 0 15px rgba(255, 107, 203, 0.7);
-            animation: pulse 2s infinite alternate;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
         }
         
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-weight: 800;
         }
         
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
-            line-height: 1.6;
-            color: #b0b0ff;
+            color: #aaa;
         }
         
         .main-content {
-            background: rgba(30, 30, 46, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
+            background: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .input-section {
-            margin-bottom: 25px;
-        }
-        
-        .section-title {
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            color: var(--light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 20px;
         }
         
         .input-group {
@@ -129,56 +88,48 @@
         
         input {
             flex: 1;
-            padding: 18px 20px;
+            padding: 15px 20px;
             font-size: 1rem;
-            background: rgba(20, 20, 35, 0.8);
-            border: 2px solid rgba(108, 92, 231, 0.3);
-            border-radius: 12px 0 0 12px;
+            background: rgba(20, 20, 35, 0.9);
+            border: 2px solid rgba(255, 0, 80, 0.3);
+            border-radius: 10px 0 0 10px;
             outline: none;
             color: var(--light);
-            font-family: 'Roboto Mono', monospace;
             transition: all 0.3s;
         }
         
         input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(255, 107, 203, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 80, 0.3);
         }
         
         .process-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), #ff2d55);
             color: white;
             border: none;
-            padding: 0 30px;
+            padding: 0 25px;
             font-size: 1rem;
             font-weight: 600;
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 10px 10px 0;
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .process-btn:hover {
+            background: linear-gradient(135deg, #ff2d55, var(--primary));
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 107, 203, 0.3);
         }
         
         .process-btn:disabled {
             background: #555;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
         
         .example {
-            color: #aaa;
+            color: #777;
             font-size: 0.9rem;
-            margin-top: 8px;
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .example span {
-            color: var(--accent);
-            font-weight: 600;
+            margin-top: 5px;
         }
         
         .result-section {
@@ -200,11 +151,10 @@
         
         .video-wrapper {
             width: 100%;
-            max-width: 320px;
-            border-radius: 15px;
+            max-width: 280px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
-            position: relative;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
         }
         
         #videoPlayer {
@@ -215,9 +165,9 @@
         
         .video-placeholder {
             width: 100%;
-            height: 500px;
+            height: 400px;
             background: linear-gradient(45deg, #1a1a2e, #16213e);
-            border-radius: 15px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -226,7 +176,7 @@
         }
         
         .video-placeholder i {
-            font-size: 4rem;
+            font-size: 3rem;
             margin-bottom: 15px;
             color: var(--primary);
         }
@@ -234,15 +184,8 @@
         .image-gallery {
             display: none;
             width: 100%;
-            max-width: 350px;
+            max-width: 300px;
             margin: 0 auto;
-        }
-        
-        .image-slider {
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
         }
         
         .image-slide {
@@ -258,6 +201,7 @@
             width: 100%;
             height: auto;
             display: block;
+            border-radius: 10px;
         }
         
         .slider-controls {
@@ -268,33 +212,18 @@
         }
         
         .slider-btn {
-            background: rgba(108, 92, 231, 0.2);
+            background: rgba(255, 0, 80, 0.2);
             color: white;
-            border: 2px solid var(--secondary);
+            border: 2px solid var(--primary);
             padding: 8px 15px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .slider-btn:hover {
-            background: var(--secondary);
         }
         
         .download-section {
-            margin-top: 25px;
+            margin-top: 20px;
             width: 100%;
-        }
-        
-        .download-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--light);
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .download-options {
@@ -310,61 +239,31 @@
             justify-content: center;
             gap: 10px;
             padding: 20px 15px;
-            background: rgba(40, 40, 60, 0.8);
+            background: rgba(40, 40, 60, 0.9);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
-            transition: all 0.3s;
             cursor: pointer;
-            font-size: 1rem;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .download-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: 0.5s;
-        }
-        
-        .download-btn:hover::before {
-            left: 100%;
+            transition: all 0.3s;
         }
         
         .download-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .download-btn.video {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-        
-        .download-btn.video:hover {
-            box-shadow: 0 10px 20px rgba(255, 107, 203, 0.3);
+            background: linear-gradient(135deg, var(--primary), #ff2d55);
         }
         
         .download-btn.audio {
             background: linear-gradient(135deg, #ff9500, #ff5e3a);
         }
         
-        .download-btn.audio:hover {
-            box-shadow: 0 10px 20px rgba(255, 149, 0, 0.3);
-        }
-        
         .download-btn.photo {
             background: linear-gradient(135deg, #9d4edd, #c77dff);
-        }
-        
-        .download-btn.photo:hover {
-            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.3);
         }
         
         .download-btn.disabled {
@@ -379,62 +278,32 @@
         }
         
         .download-btn i {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
         
-        .quality-section {
-            margin: 20px 0;
-            width: 100%;
+        .download-btn span {
+            font-size: 1rem;
         }
         
-        .quality-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--light);
-            font-size: 1.1rem;
-        }
-        
-        .quality-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .quality-btn {
-            padding: 10px 20px;
-            background: rgba(30, 30, 46, 0.8);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            border: 2px solid rgba(108, 92, 231, 0.3);
-            color: #ddd;
-        }
-        
-        .quality-btn:hover {
-            background: rgba(108, 92, 231, 0.2);
-        }
-        
-        .quality-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: transparent;
+        .download-btn small {
+            font-size: 0.8rem;
+            opacity: 0.8;
         }
         
         .loader {
             display: none;
             text-align: center;
-            margin: 30px 0;
+            margin: 25px 0;
         }
         
         .spinner {
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-top: 5px solid var(--primary);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 10px;
         }
         
         @keyframes spin {
@@ -442,21 +311,21 @@
             100% { transform: rotate(360deg); }
         }
         
-        .status-message {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
             display: none;
             font-weight: 500;
         }
         
-        .error-message {
+        .error {
             background: rgba(220, 53, 69, 0.1);
             border-left: 4px solid #dc3545;
             color: #ff6b6b;
         }
         
-        .success-message {
+        .success {
             background: rgba(23, 162, 184, 0.1);
             border-left: 4px solid #17a2b8;
             color: #4dccbd;
@@ -464,38 +333,9 @@
         
         footer {
             text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            padding: 25px 0;
-            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 20px 0;
             font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .auto-download-notice {
-            background: rgba(0, 206, 201, 0.1);
-            border-left: 4px solid var(--accent);
-            color: var(--accent);
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 0.9rem;
-        }
-        
-        .download-progress {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-top: 10px;
-            overflow: hidden;
-            display: none;
-        }
-        
-        .download-progress-bar {
-            height: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            width: 0%;
-            transition: width 0.3s;
         }
         
         @media (max-width: 768px) {
@@ -504,152 +344,107 @@
             }
             
             input {
-                border-radius: 12px;
+                border-radius: 10px;
                 margin-bottom: 10px;
             }
             
             .process-btn {
-                border-radius: 12px;
-                padding: 18px;
+                border-radius: 10px;
+                padding: 15px;
             }
             
             .download-options {
                 grid-template-columns: 1fr;
             }
             
-            .video-wrapper {
-                max-width: 280px;
-            }
-            
-            .video-placeholder {
-                height: 400px;
-            }
-            
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
         }
         
-        .download-success {
-            animation: downloadSuccess 1s ease-out;
+        .downloading {
+            animation: pulse 0.5s infinite alternate;
         }
         
-        @keyframes downloadSuccess {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); background: var(--neon-green); }
-            100% { transform: scale(1); }
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.7; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo-container">
-                <i class="fab fa-tiktok logo-icon"></i>
+            <div class="logo">
+                <i class="fab fa-tiktok"></i>
                 <h1>TikTok Downloader</h1>
             </div>
-            <p class="subtitle">Download video, audio, dan foto TikTok secara otomatis. Cukup klik tombol download!</p>
+            <p class="subtitle">Download video, audio, dan foto TikTok dengan satu klik</p>
         </header>
         
         <div class="main-content">
             <div class="input-section">
-                <h2 class="section-title"><i class="fas fa-link"></i> Tempel Link TikTok</h2>
-                
                 <div class="input-group">
-                    <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@username/video/123456789" autocomplete="off">
+                    <input type="text" id="tiktokUrl" placeholder="Tempel link TikTok di sini..." autocomplete="off">
                     <button class="process-btn" id="processBtn">Proses</button>
                 </div>
-                <p class="example">Contoh: <span>https://www.tiktok.com/@tiktok/video/7156033831819635974</span></p>
+                <p class="example">Contoh: https://www.tiktok.com/@tiktok/video/7156033831819635974</p>
                 
-                <div class="auto-download-notice">
-                    <i class="fas fa-bolt"></i> Download otomatis: Cukup klik tombol download, file langsung terunduh!
-                </div>
-                
-                <div class="error-message status-message" id="errorMessage">
+                <div class="message error" id="errorMessage">
                     <i class="fas fa-exclamation-circle"></i> <span id="errorText"></span>
                 </div>
                 
-                <div class="success-message status-message" id="successMessage">
+                <div class="message success" id="successMessage">
                     <i class="fas fa-check-circle"></i> <span id="successText"></span>
                 </div>
             </div>
             
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p>Memproses konten TikTok...</p>
+                <p>Memproses...</p>
             </div>
             
             <div class="result-section" id="resultSection">
                 <div class="media-container">
-                    <!-- Video Player -->
                     <div class="video-wrapper">
                         <video id="videoPlayer" controls>
                             <source id="videoSource" src="" type="video/mp4">
-                            Browser Anda tidak mendukung pemutar video.
                         </video>
                         <div class="video-placeholder" id="videoPlaceholder">
                             <i class="fab fa-tiktok"></i>
-                            <p>Pratinjau akan muncul di sini</p>
+                            <p>Pratinjau video</p>
                         </div>
                     </div>
                     
-                    <!-- Image Gallery -->
                     <div class="image-gallery" id="imageGallery">
-                        <div class="image-slider" id="imageSlider">
-                            <!-- Gambar akan dimuat di sini -->
+                        <div id="imageSlider">
+                            <!-- Images will be loaded here -->
                         </div>
                         <div class="slider-controls">
                             <button class="slider-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
                             <button class="slider-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
                         </div>
                     </div>
-                    
-                    <!-- Quality Options for Video -->
-                    <div class="quality-section" id="qualitySection">
-                        <div class="quality-title">Pilih Kualitas:</div>
-                        <div class="quality-options" id="qualityOptions">
-                            <!-- Opsi kualitas akan dimuat di sini -->
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="download-section">
-                    <div class="download-title"><i class="fas fa-download"></i> Pilih Format Download:</div>
                     <div class="download-options">
                         <button class="download-btn video" id="downloadVideoBtn">
                             <i class="fas fa-video"></i>
                             <span>Download Video</span>
                             <small>Klik untuk download otomatis</small>
-                            <div class="download-progress" id="videoProgress">
-                                <div class="download-progress-bar"></div>
-                            </div>
                         </button>
                         
                         <button class="download-btn audio" id="downloadAudioBtn">
                             <i class="fas fa-music"></i>
                             <span>Download Audio</span>
                             <small>Klik untuk download otomatis</small>
-                            <div class="download-progress" id="audioProgress">
-                                <div class="download-progress-bar"></div>
-                            </div>
                         </button>
                         
-                        <button class="download-btn photo" id="downloadCurrentPhotoBtn">
+                        <button class="download-btn photo" id="downloadPhotoBtn">
                             <i class="fas fa-image"></i>
-                            <span>Download Foto Ini</span>
+                            <span>Download Foto</span>
                             <small>Klik untuk download otomatis</small>
-                            <div class="download-progress" id="photoProgress">
-                                <div class="download-progress-bar"></div>
-                            </div>
-                        </button>
-                        
-                        <button class="download-btn photo" id="downloadAllPhotosBtn">
-                            <i class="fas fa-images"></i>
-                            <span>Download Semua Foto</span>
-                            <small>Klik untuk download otomatis</small>
-                            <div class="download-progress" id="allPhotosProgress">
-                                <div class="download-progress-bar"></div>
-                            </div>
                         </button>
                     </div>
                 </div>
@@ -657,14 +452,13 @@
         </div>
         
         <footer>
-            <p>TikTok Downloader &copy; 2023 - Download otomatis dengan sekali klik</p>
-            <p>Gunakan dengan bijak dan hormati hak cipta kreator.</p>
+            <p>TikTok Downloader &copy; 2023 | Download langsung dengan satu klik</p>
         </footer>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Elemen DOM
+            // Elements
             const processBtn = document.getElementById('processBtn');
             const tiktokUrlInput = document.getElementById('tiktokUrl');
             const resultSection = document.getElementById('resultSection');
@@ -675,8 +469,7 @@
             const successText = document.getElementById('successText');
             const downloadVideoBtn = document.getElementById('downloadVideoBtn');
             const downloadAudioBtn = document.getElementById('downloadAudioBtn');
-            const downloadCurrentPhotoBtn = document.getElementById('downloadCurrentPhotoBtn');
-            const downloadAllPhotosBtn = document.getElementById('downloadAllPhotosBtn');
+            const downloadPhotoBtn = document.getElementById('downloadPhotoBtn');
             const videoPlayer = document.getElementById('videoPlayer');
             const videoSource = document.getElementById('videoSource');
             const videoPlaceholder = document.getElementById('videoPlaceholder');
@@ -684,575 +477,292 @@
             const imageSlider = document.getElementById('imageSlider');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
-            const qualitySection = document.getElementById('qualitySection');
-            const qualityOptions = document.getElementById('qualityOptions');
             
-            // Progress bars
-            const videoProgress = document.getElementById('videoProgress');
-            const audioProgress = document.getElementById('audioProgress');
-            const photoProgress = document.getElementById('photoProgress');
-            const allPhotosProgress = document.getElementById('allPhotosProgress');
-            
-            // Variabel state
+            // State
             let currentMediaData = null;
-            let currentQuality = 'hd';
             let currentSlide = 0;
             let totalSlides = 0;
             
-            // Contoh URL untuk placeholder
-            const exampleUrls = [
-                "https://www.tiktok.com/@tiktok/video/7156033831819635974",
-                "https://www.tiktok.com/@khaby.lame/video/7156039167568317742",
-                "https://www.tiktok.com/@willsmith/video/7156039167568317742"
+            // TikTok API endpoints (using reliable public APIs)
+            const TIKTOK_APIS = [
+                {
+                    name: "TikMate",
+                    url: "https://tikmate.app/api/lookup",
+                    method: "POST"
+                },
+                {
+                    name: "TikWM",
+                    url: "https://www.tikwm.com/api/",
+                    method: "POST"
+                }
             ];
             
-            // Set placeholder dengan contoh URL
-            let urlIndex = 0;
-            setInterval(() => {
-                tiktokUrlInput.placeholder = exampleUrls[urlIndex];
-                urlIndex = (urlIndex + 1) % exampleUrls.length;
-            }, 3000);
+            // Function to show message
+            function showMessage(type, text) {
+                if (type === 'error') {
+                    errorText.textContent = text;
+                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'none';
+                } else {
+                    successText.textContent = text;
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                }
+                
+                // Auto hide
+                setTimeout(() => {
+                    if (type === 'error') {
+                        errorMessage.style.display = 'none';
+                    } else {
+                        successMessage.style.display = 'none';
+                    }
+                }, 3000);
+            }
             
-            // Fungsi untuk memproses URL TikTok
+            // Function to reset UI
+            function resetUI() {
+                resultSection.style.display = 'none';
+                loader.style.display = 'none';
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+                videoPlaceholder.style.display = 'flex';
+                videoPlayer.style.display = 'none';
+                imageGallery.style.display = 'none';
+                imageSlider.innerHTML = '';
+            }
+            
+            // Function to validate TikTok URL
+            function isValidTikTokUrl(url) {
+                const patterns = [
+                    /https?:\/\/(www\.|vm\.|vt\.)?tiktok\.com\/.+/,
+                    /https?:\/\/(vt\.tiktok\.com\/|tiktok\.com\/t\/).+/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            }
+            
+            // Function to extract video ID from URL
+            function extractVideoId(url) {
+                const regex = /\/video\/(\d+)/;
+                const match = url.match(regex);
+                return match ? match[1] : null;
+            }
+            
+            // Function to process TikTok URL
+            async function processTikTokUrl(url) {
+                // Try different APIs
+                for (const api of TIKTOK_APIS) {
+                    try {
+                        console.log(`Trying API: ${api.name}`);
+                        const data = await fetchTikTokData(url, api);
+                        if (data) return data;
+                    } catch (error) {
+                        console.log(`${api.name} failed:`, error);
+                        continue;
+                    }
+                }
+                throw new Error("Tidak dapat memproses video. Coba URL lain.");
+            }
+            
+            // Function to fetch TikTok data
+            async function fetchTikTokData(url, api) {
+                const formData = new FormData();
+                formData.append('url', url);
+                
+                try {
+                    const response = await fetch(api.url, {
+                        method: api.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Parse response based on API
+                    if (api.name === "TikMate") {
+                        return parseTikMateResponse(data);
+                    } else if (api.name === "TikWM") {
+                        return parseTikWMResponse(data);
+                    }
+                } catch (error) {
+                    throw error;
+                }
+            }
+            
+            // Parse TikMate response
+            function parseTikMateResponse(data) {
+                if (data.video) {
+                    return {
+                        type: 'video',
+                        videoUrl: data.video || data.download,
+                        audioUrl: data.music || data.video,
+                        title: data.title || "Video TikTok",
+                        author: data.author || "Unknown"
+                    };
+                }
+                return null;
+            }
+            
+            // Parse TikWM response
+            function parseTikWMResponse(data) {
+                if (data.data) {
+                    const videoData = data.data;
+                    return {
+                        type: 'video',
+                        videoUrl: videoData.play || videoData.hdplay,
+                        audioUrl: videoData.music || videoData.play,
+                        title: videoData.title || "Video TikTok",
+                        author: videoData.author?.nickname || "Unknown"
+                    };
+                }
+                return null;
+            }
+            
+            // Function to force download
+            function forceDownload(url, filename) {
+                // Create invisible link
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                
+                // Add to page and click
+                document.body.appendChild(link);
+                link.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                }, 100);
+            }
+            
+            // Function to download with blob (for CORS issues)
+            async function downloadWithBlob(url, filename, button) {
+                try {
+                    // Show downloading state
+                    button.classList.add('downloading');
+                    button.disabled = true;
+                    
+                    // Fetch the file
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    // Convert to blob
+                    const blob = await response.blob();
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = filename;
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // Clean up
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(blobUrl);
+                        button.classList.remove('downloading');
+                        button.disabled = false;
+                    }, 100);
+                    
+                    showMessage('success', 'Download berhasil!');
+                } catch (error) {
+                    console.error('Download error:', error);
+                    
+                    // Fallback to direct download
+                    forceDownload(url, filename);
+                    
+                    button.classList.remove('downloading');
+                    button.disabled = false;
+                    showMessage('success', 'Download dimulai...');
+                }
+            }
+            
+            // Process button click
             processBtn.addEventListener('click', async function() {
                 const url = tiktokUrlInput.value.trim();
                 
-                // Validasi URL
                 if (!url) {
-                    showError("Harap masukkan URL TikTok");
+                    showMessage('error', 'Harap masukkan URL TikTok');
                     return;
                 }
                 
                 if (!isValidTikTokUrl(url)) {
-                    showError("URL harus dari TikTok (tiktok.com atau vt.tiktok.com)");
+                    showMessage('error', 'URL TikTok tidak valid');
                     return;
                 }
                 
-                // Reset state
                 resetUI();
-                
-                // Tampilkan loader
                 loader.style.display = 'block';
                 processBtn.disabled = true;
                 
                 try {
-                    // Proses URL TikTok
-                    const mediaData = await processTikTokUrl(url);
+                    currentMediaData = await processTikTokUrl(url);
                     
-                    // Simpan data
-                    currentMediaData = mediaData;
+                    // Display video
+                    videoSource.src = currentMediaData.videoUrl;
+                    videoPlayer.load();
+                    videoPlaceholder.style.display = 'none';
+                    videoPlayer.style.display = 'block';
                     
-                    // Tampilkan data
-                    displayMediaData(mediaData);
-                    
-                    // Tampilkan hasil
+                    // Show result section
                     resultSection.style.display = 'block';
-                    showSuccess(mediaData.type === 'video' 
-                        ? 'Video siap didownload! Pilih kualitas dan klik tombol download.' 
-                        : 'Foto siap didownload! Klik tombol download.');
+                    showMessage('success', 'Video siap didownload!');
                     
                 } catch (error) {
-                    console.error("Error:", error);
-                    showError(error.message || "Gagal memproses konten. Coba lagi.");
+                    console.error('Processing error:', error);
+                    showMessage('error', error.message || 'Gagal memproses video');
                 } finally {
                     loader.style.display = 'none';
                     processBtn.disabled = false;
                 }
             });
             
-            // Fungsi untuk memproses URL TikTok
-            async function processTikTokUrl(url) {
-                // Gunakan API TikTok yang sederhana
-                try {
-                    return await processWithSimpleAPI(url);
-                } catch (error) {
-                    console.log("API sederhana gagal, mencoba alternatif...");
-                    throw error;
-                }
-            }
-            
-            // Fungsi sederhana untuk memproses TikTok
-            async function processWithSimpleAPI(url) {
-                // Simulasi data (dalam implementasi nyata, gunakan API sesungguhnya)
-                // Untuk demo, kita buat data dummy
-                
-                // Cek apakah URL mengandung "video" atau "photo"
-                const isVideo = url.includes('/video/');
-                
-                if (isVideo) {
-                    // Simulasi data video
-                    return {
-                        type: 'video',
-                        title: "Video TikTok Demo",
-                        author: "tiktokuser",
-                        duration: "0:30",
-                        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", // URL video demo
-                        audioUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", // Sama dengan video untuk demo
-                        qualities: [
-                            {
-                                label: "HD",
-                                value: "hd",
-                                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                                resolution: "720p"
-                            },
-                            {
-                                label: "SD",
-                                value: "sd",
-                                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-                                resolution: "480p"
-                            }
-                        ]
-                    };
-                } else {
-                    // Simulasi data foto
-                    const demoImages = [
-                        "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                        "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                        "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
-                    ];
-                    
-                    return {
-                        type: 'photo',
-                        title: "Foto TikTok Demo",
-                        author: "tiktokuser",
-                        duration: `${demoImages.length} foto`,
-                        images: demoImages
-                    };
-                }
-            }
-            
-            // Fungsi untuk menampilkan data media
-            function displayMediaData(mediaData) {
-                if (mediaData.type === 'video') {
-                    displayVideoData(mediaData);
-                } else if (mediaData.type === 'photo') {
-                    displayPhotoData(mediaData);
-                }
-            }
-            
-            // Fungsi untuk menampilkan data video
-            function displayVideoData(videoData) {
-                // Tampilkan video player, sembunyikan image gallery
-                videoPlaceholder.style.display = 'none';
-                videoPlayer.style.display = 'block';
-                imageGallery.style.display = 'none';
-                qualitySection.style.display = 'block';
-                
-                // Atur video player
-                if (videoData.videoUrl) {
-                    videoSource.src = videoData.videoUrl;
-                    videoPlayer.load();
-                    
-                    // Event listener untuk error video
-                    videoPlayer.addEventListener('error', function() {
-                        videoPlaceholder.style.display = 'flex';
-                        videoPlayer.style.display = 'none';
-                    });
-                } else {
-                    videoPlaceholder.style.display = 'flex';
-                    videoPlayer.style.display = 'none';
-                }
-                
-                // Tampilkan tombol video dan audio
-                downloadVideoBtn.style.display = 'flex';
-                downloadAudioBtn.style.display = 'flex';
-                downloadCurrentPhotoBtn.style.display = 'none';
-                downloadAllPhotosBtn.style.display = 'none';
-                
-                // Set data untuk download
-                downloadVideoBtn.dataset.url = videoData.videoUrl;
-                downloadVideoBtn.dataset.filename = `tiktok_video_${Date.now()}.mp4`;
-                
-                downloadAudioBtn.dataset.url = videoData.audioUrl;
-                downloadAudioBtn.dataset.filename = `tiktok_audio_${Date.now()}.mp3`;
-                
-                // Buat opsi kualitas
-                createQualityOptions(videoData.qualities);
-            }
-            
-            // Fungsi untuk menampilkan data foto
-            function displayPhotoData(photoData) {
-                // Sembunyikan video player, tampilkan image gallery
-                videoPlaceholder.style.display = 'flex';
-                videoPlayer.style.display = 'none';
-                imageGallery.style.display = 'block';
-                qualitySection.style.display = 'none';
-                
-                // Sembunyikan tombol video dan audio
-                downloadVideoBtn.style.display = 'none';
-                downloadAudioBtn.style.display = 'none';
-                downloadCurrentPhotoBtn.style.display = 'flex';
-                downloadAllPhotosBtn.style.display = 'flex';
-                
-                // Reset slider
-                currentSlide = 0;
-                totalSlides = photoData.images.length;
-                
-                // Bersihkan slider sebelumnya
-                imageSlider.innerHTML = '';
-                
-                // Tambahkan gambar ke slider
-                photoData.images.forEach((imageUrl, index) => {
-                    const slide = document.createElement('div');
-                    slide.className = `image-slide ${index === 0 ? 'active' : ''}`;
-                    
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = `Foto TikTok ${index + 1}`;
-                    img.loading = 'lazy';
-                    
-                    slide.appendChild(img);
-                    imageSlider.appendChild(slide);
-                });
-                
-                // Set data untuk download
-                downloadCurrentPhotoBtn.dataset.urls = JSON.stringify([photoData.images[0]]);
-                downloadCurrentPhotoBtn.dataset.filename = `tiktok_photo_${Date.now()}.jpg`;
-                
-                downloadAllPhotosBtn.dataset.urls = JSON.stringify(photoData.images);
-                downloadAllPhotosBtn.dataset.filenamePrefix = `tiktok_photos_${Date.now()}`;
-            }
-            
-            // Fungsi untuk membuat opsi kualitas video
-            function createQualityOptions(qualities) {
-                // Bersihkan opsi sebelumnya
-                qualityOptions.innerHTML = '';
-                
-                if (!qualities || qualities.length === 0) {
-                    qualitySection.style.display = 'none';
-                    return;
-                }
-                
-                // Tambahkan opsi kualitas
-                qualities.forEach((quality, index) => {
-                    const qualityBtn = document.createElement('div');
-                    qualityBtn.className = `quality-btn ${index === 0 ? 'active' : ''}`;
-                    qualityBtn.textContent = `${quality.label} (${quality.resolution || ''})`;
-                    qualityBtn.dataset.quality = quality.value;
-                    qualityBtn.dataset.url = quality.url;
-                    
-                    qualityBtn.addEventListener('click', function() {
-                        // Hapus class active dari semua tombol
-                        document.querySelectorAll('.quality-btn').forEach(btn => {
-                            btn.classList.remove('active');
-                        });
-                        
-                        // Tambah class active ke tombol yang diklik
-                        this.classList.add('active');
-                        
-                        // Update video source
-                        const selectedUrl = this.dataset.url;
-                        videoSource.src = selectedUrl;
-                        videoPlayer.load();
-                        
-                        // Update download link
-                        downloadVideoBtn.dataset.url = selectedUrl;
-                        
-                        // Update current quality
-                        currentQuality = this.dataset.quality;
-                    });
-                    
-                    qualityOptions.appendChild(qualityBtn);
-                });
-            }
-            
-            // Event listener untuk slider
-            prevBtn.addEventListener('click', function() {
-                if (currentSlide > 0) {
-                    // Sembunyikan slide saat ini
-                    const current = imageSlider.querySelector('.image-slide.active');
-                    current.classList.remove('active');
-                    
-                    // Tampilkan slide sebelumnya
-                    currentSlide--;
-                    const prev = imageSlider.children[currentSlide];
-                    prev.classList.add('active');
-                    
-                    // Update download button untuk foto saat ini
-                    if (currentMediaData && currentMediaData.images) {
-                        downloadCurrentPhotoBtn.dataset.urls = JSON.stringify([currentMediaData.images[currentSlide]]);
-                    }
-                }
-            });
-            
-            nextBtn.addEventListener('click', function() {
-                if (currentSlide < totalSlides - 1) {
-                    // Sembunyikan slide saat ini
-                    const current = imageSlider.querySelector('.image-slide.active');
-                    current.classList.remove('active');
-                    
-                    // Tampilkan slide berikutnya
-                    currentSlide++;
-                    const next = imageSlider.children[currentSlide];
-                    next.classList.add('active');
-                    
-                    // Update download button untuk foto saat ini
-                    if (currentMediaData && currentMediaData.images) {
-                        downloadCurrentPhotoBtn.dataset.urls = JSON.stringify([currentMediaData.images[currentSlide]]);
-                    }
-                }
-            });
-            
-            // Fungsi untuk mendownload file
-            function downloadFile(url, filename) {
-                return new Promise((resolve, reject) => {
-                    // Buat elemen link sementara
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = filename;
-                    link.style.display = 'none';
-                    
-                    // Tambahkan ke dokumen
-                    document.body.appendChild(link);
-                    
-                    // Trigger klik
-                    link.click();
-                    
-                    // Hapus dari dokumen setelah klik
-                    setTimeout(() => {
-                        document.body.removeChild(link);
-                        resolve();
-                    }, 100);
-                });
-            }
-            
-            // Fungsi untuk mendownload file dengan progress
-            function downloadFileWithProgress(url, filename, progressBar) {
-                return new Promise((resolve, reject) => {
-                    // Tampilkan progress bar
-                    progressBar.style.display = 'block';
-                    const progressBarInner = progressBar.querySelector('.download-progress-bar');
-                    
-                    // Simulasi progress (dalam implementasi nyata, gunakan XMLHttpRequest atau fetch dengan progress)
-                    let progress = 0;
-                    const interval = setInterval(() => {
-                        progress += 10;
-                        progressBarInner.style.width = `${progress}%`;
-                        
-                        if (progress >= 100) {
-                            clearInterval(interval);
-                            
-                            // Download file
-                            downloadFile(url, filename)
-                                .then(() => {
-                                    // Sembunyikan progress bar setelah selesai
-                                    setTimeout(() => {
-                                        progressBar.style.display = 'none';
-                                        progressBarInner.style.width = '0%';
-                                    }, 500);
-                                    resolve();
-                                })
-                                .catch(reject);
-                        }
-                    }, 50);
-                });
-            }
-            
-            // Event listener untuk tombol download video
+            // Download video button
             downloadVideoBtn.addEventListener('click', function() {
-                const url = this.dataset.url;
-                const filename = this.dataset.filename;
-                
-                if (!url) {
-                    showError("URL video tidak tersedia");
+                if (!currentMediaData || !currentMediaData.videoUrl) {
+                    showMessage('error', 'Video tidak tersedia');
                     return;
                 }
                 
-                // Animasi tombol
-                this.classList.add('download-success');
-                setTimeout(() => this.classList.remove('download-success'), 1000);
-                
-                // Download file
-                downloadFileWithProgress(url, filename, videoProgress)
-                    .then(() => {
-                        showSuccess("Video berhasil didownload!");
-                    })
-                    .catch(() => {
-                        showError("Gagal mendownload video");
-                    });
+                const filename = `tiktok_video_${Date.now()}.mp4`;
+                downloadWithBlob(currentMediaData.videoUrl, filename, this);
             });
             
-            // Event listener untuk tombol download audio
+            // Download audio button
             downloadAudioBtn.addEventListener('click', function() {
-                const url = this.dataset.url;
-                const filename = this.dataset.filename;
-                
-                if (!url) {
-                    showError("URL audio tidak tersedia");
+                if (!currentMediaData || !currentMediaData.audioUrl) {
+                    showMessage('error', 'Audio tidak tersedia');
                     return;
                 }
                 
-                // Animasi tombol
-                this.classList.add('download-success');
-                setTimeout(() => this.classList.remove('download-success'), 1000);
-                
-                // Download file
-                downloadFileWithProgress(url, filename, audioProgress)
-                    .then(() => {
-                        showSuccess("Audio berhasil didownload!");
-                    })
-                    .catch(() => {
-                        showError("Gagal mendownload audio");
-                    });
+                const filename = `tiktok_audio_${Date.now()}.mp3`;
+                downloadWithBlob(currentMediaData.audioUrl, filename, this);
             });
             
-            // Event listener untuk tombol download foto saat ini
-            downloadCurrentPhotoBtn.addEventListener('click', function() {
-                const urls = JSON.parse(this.dataset.urls || '[]');
-                const filename = this.dataset.filename;
-                
-                if (urls.length === 0) {
-                    showError("URL foto tidak tersedia");
-                    return;
-                }
-                
-                // Animasi tombol
-                this.classList.add('download-success');
-                setTimeout(() => this.classList.remove('download-success'), 1000);
-                
-                // Download file pertama (foto saat ini)
-                downloadFileWithProgress(urls[0], filename, photoProgress)
-                    .then(() => {
-                        showSuccess("Foto berhasil didownload!");
-                    })
-                    .catch(() => {
-                        showError("Gagal mendownload foto");
-                    });
+            // Download photo button
+            downloadPhotoBtn.addEventListener('click', function() {
+                showMessage('error', 'Foto tidak tersedia untuk video ini');
             });
             
-            // Event listener untuk tombol download semua foto
-            downloadAllPhotosBtn.addEventListener('click', function() {
-                const urls = JSON.parse(this.dataset.urls || '[]');
-                const filenamePrefix = this.dataset.filenamePrefix;
-                
-                if (urls.length === 0) {
-                    showError("URL foto tidak tersedia");
-                    return;
-                }
-                
-                if (urls.length > 10) {
-                    if (!confirm(`Anda akan mendownload ${urls.length} foto. Lanjutkan?`)) {
-                        return;
-                    }
-                }
-                
-                // Animasi tombol
-                this.classList.add('download-success');
-                setTimeout(() => this.classList.remove('download-success'), 1000);
-                
-                // Tampilkan progress bar
-                allPhotosProgress.style.display = 'block';
-                const progressBarInner = allPhotosProgress.querySelector('.download-progress-bar');
-                
-                // Download semua foto satu per satu
-                let downloaded = 0;
-                
-                const downloadNext = () => {
-                    if (downloaded >= urls.length) {
-                        // Selesai
-                        progressBarInner.style.width = '100%';
-                        setTimeout(() => {
-                            allPhotosProgress.style.display = 'none';
-                            progressBarInner.style.width = '0%';
-                        }, 500);
-                        
-                        showSuccess(`Semua ${urls.length} foto berhasil didownload!`);
-                        return;
-                    }
-                    
-                    // Update progress
-                    const progress = (downloaded / urls.length) * 100;
-                    progressBarInner.style.width = `${progress}%`;
-                    
-                    // Download file saat ini
-                    const url = urls[downloaded];
-                    const filename = `${filenamePrefix}_${downloaded + 1}.jpg`;
-                    
-                    downloadFile(url, filename)
-                        .then(() => {
-                            downloaded++;
-                            // Download berikutnya setelah delay
-                            setTimeout(downloadNext, 300);
-                        })
-                        .catch(() => {
-                            // Lewati jika gagal dan lanjut ke berikutnya
-                            downloaded++;
-                            setTimeout(downloadNext, 300);
-                        });
-                };
-                
-                // Mulai download
-                downloadNext();
-            });
-            
-            // Fungsi untuk menampilkan error
-            function showError(message) {
-                errorText.textContent = message;
-                errorMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-                
-                // Auto hide setelah 5 detik
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
-            }
-            
-            // Fungsi untuk menampilkan success
-            function showSuccess(message) {
-                successText.textContent = message;
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // Auto hide setelah 3 detik
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }
-            
-            // Fungsi untuk reset UI
-            function resetUI() {
-                errorMessage.style.display = 'none';
-                successMessage.style.display = 'none';
-                resultSection.style.display = 'none';
-                
-                // Reset video
-                videoSource.src = '';
-                videoPlayer.load();
-                videoPlaceholder.style.display = 'flex';
-                videoPlayer.style.display = 'none';
-                
-                // Reset image gallery
-                imageSlider.innerHTML = '';
-                imageGallery.style.display = 'none';
-                
-                // Reset quality options
-                qualityOptions.innerHTML = '';
-                
-                // Reset progress bars
-                document.querySelectorAll('.download-progress').forEach(bar => {
-                    bar.style.display = 'none';
-                    bar.querySelector('.download-progress-bar').style.width = '0%';
-                });
-            }
-            
-            // Fungsi validasi URL TikTok
-            function isValidTikTokUrl(url) {
-                const patterns = [
-                    /https?:\/\/(www\.|vm\.|vt\.)?tiktok\.com\/.+/,
-                    /https?:\/\/(vt\.tiktok\.com\/|tiktok\.com\/t\/).+/
-                ];
-                
-                return patterns.some(pattern => pattern.test(url));
-            }
-            
-            // Izinkan enter untuk memicu proses
-            tiktokUrlInput.addEventListener('keyup', function(e) {
+            // Enter key support
+            tiktokUrlInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     processBtn.click();
                 }
             });
             
-            // Set contoh URL untuk testing
+            // Set example URL
             tiktokUrlInput.value = "https://www.tiktok.com/@tiktok/video/7156033831819635974";
         });
     </script>
