@@ -346,31 +346,6 @@
             border-left: 5px solid #17a2b8;
         }
         
-        .api-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .api-option {
-            padding: 10px 15px;
-            background-color: #f1f1f1;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-        
-        .api-option:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .api-option.active {
-            background-color: #4facfe;
-            color: white;
-        }
-        
         .quality-options {
             display: flex;
             gap: 10px;
@@ -444,17 +419,11 @@
             <div class="input-section">
                 <h2>Tempel Link TikTok di Bawah</h2>
                 
-                <div class="api-selector">
-                    <div class="api-option active" data-api="tiktok-api">TikTok API (Stabil)</div>
-                    <div class="api-option" data-api="snaptik">SnapTik API</div>
-                    <div class="api-option" data-api="tikmate">TikMate API</div>
-                </div>
-                
                 <div class="input-group">
                     <input type="text" id="tiktokUrl" placeholder="Contoh: https://www.tiktok.com/@username/video/123456789" autocomplete="off">
                     <button id="downloadBtn">Proses Video</button>
                 </div>
-                <p class="example">Contoh URL: <span>https://www.tiktok.com/@tiktok/video/1234567890123456789</span></p>
+                <p class="example">Contoh URL: <span>https://www.tiktok.com/@tiktok/video/7156033831819635974</span></p>
                 
                 <div class="warning">
                     <strong>Perhatian:</strong> Website ini hanya untuk mengunduh video TikTok milik sendiri atau dengan izin dari pembuat konten. Harap menghormati hak cipta dan privasi orang lain.
@@ -515,11 +484,11 @@
                 </div>
                 
                 <div class="download-options">
-                    <a href="#" class="download-btn" id="downloadVideoBtn" target="_blank">
+                    <a href="#" class="download-btn" id="downloadVideoBtn" target="_blank" download>
                         <i class="fas fa-download"></i>
                         Unduh Video (MP4)
                     </a>
-                    <a href="#" class="download-btn mp3" id="downloadAudioBtn" target="_blank">
+                    <a href="#" class="download-btn mp3" id="downloadAudioBtn" target="_blank" download>
                         <i class="fas fa-music"></i>
                         Unduh Audio (MP3)
                     </a>
@@ -573,212 +542,180 @@
             const videoSource = document.getElementById('videoSource');
             const videoPlaceholder = document.getElementById('videoPlaceholder');
             const qualityOptions = document.getElementById('qualityOptions');
-            const apiOptions = document.querySelectorAll('.api-option');
             
-            // Variabel state
-            let currentApi = 'tiktok-api';
-            let currentVideoData = null;
-            let currentQuality = 'high';
-            
-            // Contoh URL TikTok untuk placeholder
-            const exampleUrls = [
-                "https://www.tiktok.com/@tiktok/video/1234567890123456789",
-                "https://vt.tiktok.com/ZSabcdefgh/",
-                "https://www.tiktok.com/@username/video/9876543210987654321"
+            // API yang berfungsi (pilih salah satu)
+            const APIs = [
+                {
+                    name: 'TikTokAPI.io',
+                    url: 'https://tiktok-api-worker.yikais.workers.dev/api/tiktok?url=',
+                    method: 'GET'
+                },
+                {
+                    name: 'TikTok Downloader API',
+                    url: 'https://api.tiklydown.eu.org/api/download?url=',
+                    method: 'GET'
+                },
+                {
+                    name: 'TikTok Video Info',
+                    url: 'https://www.tikwm.com/api/',
+                    method: 'POST',
+                    params: 'url='
+                }
             ];
             
-            // Set placeholder dengan contoh URL
-            let urlIndex = 0;
-            setInterval(() => {
-                tiktokUrlInput.placeholder = exampleUrls[urlIndex];
-                urlIndex = (urlIndex + 1) % exampleUrls.length;
-            }, 3000);
+            let currentAPI = APIs[0];
             
-            // API endpoints
-            const apiEndpoints = {
-                'tiktok-api': 'https://tikwm.com/api/',
-                'snaptik': 'https://snaptik.app/action.php?lang=id',
-                'tikmate': 'https://tikmate.online/api/'
-            };
+            // Fungsi untuk validasi URL TikTok
+            function isValidTikTokUrl(url) {
+                const patterns = [
+                    /https?:\/\/(www\.|vm\.|vt\.)?tiktok\.com\/.+/,
+                    /https?:\/\/(vt\.tiktok\.com\/|tiktok\.com\/t\/).+/
+                ];
+                
+                return patterns.some(pattern => pattern.test(url));
+            }
             
-            // Event listener untuk pilihan API
-            apiOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    apiOptions.forEach(opt => opt.classList.remove('active'));
-                    this.classList.add('active');
-                    currentApi = this.getAttribute('data-api');
-                });
-            });
+            // Fungsi untuk membersihkan URL
+            function cleanTikTokUrl(url) {
+                // Hapus parameter query yang tidak perlu
+                return url.split('?')[0];
+            }
             
-            // Fungsi utama untuk memproses video TikTok
-            downloadBtn.addEventListener('click', async function() {
-                const url = tiktokUrlInput.value.trim();
-                
-                // Validasi URL
-                if (!url) {
-                    showError("Harap masukkan URL video TikTok");
-                    return;
-                }
-                
-                // Cek apakah URL TikTok (sederhana)
-                if (!isValidTikTokUrl(url)) {
-                    showError("URL harus dari TikTok (tiktok.com atau vt.tiktok.com)");
-                    return;
-                }
-                
-                // Sembunyikan error jika ada
-                errorMessage.style.display = 'none';
+            // Fungsi untuk menampilkan error
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
-                
-                // Tampilkan loader
-                loader.style.display = 'block';
                 resultSection.style.display = 'none';
-                downloadBtn.disabled = true;
+                loader.style.display = 'none';
+                downloadBtn.disabled = false;
+                
+                // Scroll ke error
+                setTimeout(() => {
+                    errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+            
+            // Fungsi untuk menampilkan sukses
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+            
+            // Fungsi untuk mendapatkan video dari API
+            async function fetchVideoFromAPI(url, apiIndex = 0) {
+                if (apiIndex >= APIs.length) {
+                    throw new Error('Semua API gagal');
+                }
+                
+                const api = APIs[apiIndex];
+                let apiUrl = '';
                 
                 try {
-                    // Proses video berdasarkan API yang dipilih
-                    let videoData;
-                    
-                    if (currentApi === 'tiktok-api') {
-                        videoData = await processWithTikWM(url);
-                    } else if (currentApi === 'snaptik') {
-                        videoData = await processWithSnapTik(url);
-                    } else {
-                        videoData = await processWithTikMate(url);
+                    if (api.method === 'GET') {
+                        apiUrl = api.url + encodeURIComponent(url);
+                        const response = await fetch(apiUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        return processAPIResponse(data, api.name);
+                    } else if (api.method === 'POST') {
+                        apiUrl = api.url;
+                        const formData = new FormData();
+                        formData.append('url', url);
+                        
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        return processAPIResponse(data, api.name);
                     }
-                    
-                    // Simpan data video
-                    currentVideoData = videoData;
-                    
-                    // Tampilkan hasil
-                    displayVideoData(videoData);
-                    
-                    // Sembunyikan loader
-                    loader.style.display = 'none';
-                    
-                    // Tampilkan hasil
-                    resultSection.style.display = 'block';
-                    successMessage.style.display = 'block';
-                    
-                    // Aktifkan tombol download
-                    downloadBtn.disabled = false;
-                    
-                    // Scroll ke hasil
-                    resultSection.scrollIntoView({ behavior: 'smooth' });
-                    
                 } catch (error) {
-                    console.error("Error processing video:", error);
-                    showError("Gagal memproses video. Coba lagi atau gunakan API lain.");
-                    loader.style.display = 'none';
-                    downloadBtn.disabled = false;
+                    console.log(`API ${api.name} gagal:`, error);
+                    // Coba API berikutnya
+                    return fetchVideoFromAPI(url, apiIndex + 1);
                 }
-            });
-            
-            // Fungsi untuk memproses dengan TikWM API
-            async function processWithTikWM(url) {
-                // TikWM API (bekerja tanpa CORS issues karena proxy)
-                const apiUrl = `https://corsproxy.io/?${encodeURIComponent(`https://tikwm.com/api/?url=${url}&hd=1`)}`;
-                
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                
-                if (data.code !== 0) {
-                    throw new Error("API Error: " + data.msg);
-                }
-                
-                return {
-                    title: data.data.title || "Video TikTok",
-                    author: data.data.author?.nickname || "Unknown",
-                    duration: formatDuration(data.data.duration || 0),
-                    cover: data.data.cover,
-                    videoUrl: data.data.play,
-                    hdVideoUrl: data.data.hdplay || data.data.play,
-                    audioUrl: data.data.music || data.data.play,
-                    qualities: [
-                        { label: "HD", value: "hd", url: data.data.hdplay || data.data.play },
-                        { label: "SD", value: "sd", url: data.data.play }
-                    ]
-                };
             }
             
-            // Fungsi untuk memproses dengan SnapTik
-            async function processWithSnapTik(url) {
-                // SnapTik API (menggunakan proxy untuk menghindari CORS)
-                const proxyUrl = 'https://corsproxy.io/?';
-                const apiUrl = `https://snaptik.app/action.php?lang=id&url=${url}`;
+            // Fungsi untuk memproses respons API
+            function processAPIResponse(data, apiName) {
+                console.log(`Data dari ${apiName}:`, data);
                 
-                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-                const html = await response.text();
-                
-                // Parse HTML untuk mendapatkan link download
-                // Note: Ini adalah contoh sederhana, parsing sebenarnya lebih kompleks
-                const videoMatch = html.match(/href="(https?:\/\/[^"]*\.mp4[^"]*)"/);
-                const titleMatch = html.match(/<h1[^>]*>([^<]*)<\/h1>/);
-                
-                if (!videoMatch) {
-                    throw new Error("Tidak dapat menemukan link video");
-                }
-                
-                return {
-                    title: titleMatch ? titleMatch[1] : "Video TikTok",
-                    author: extractUsername(url) || "Unknown",
-                    duration: "0:30",
-                    videoUrl: videoMatch[1],
-                    hdVideoUrl: videoMatch[1],
-                    audioUrl: videoMatch[1],
-                    qualities: [
-                        { label: "HD", value: "hd", url: videoMatch[1] },
-                        { label: "SD", value: "sd", url: videoMatch[1] }
-                    ]
-                };
-            }
-            
-            // Fungsi untuk memproses dengan TikMate
-            async function processWithTikMate(url) {
-                // TikMate API (menggunakan proxy)
-                const proxyUrl = 'https://corsproxy.io/?';
-                const apiUrl = `https://tikmate.online/api/ajaxSearch?url=${url}`;
-                
-                const response = await fetch(proxyUrl + encodeURIComponent(apiUrl), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                // Struktur data berbeda untuk setiap API
+                if (apiName === 'TikTokAPI.io') {
+                    if (data.videoUrl) {
+                        return {
+                            title: data.title || 'Video TikTok',
+                            author: data.author || 'Unknown',
+                            duration: data.duration || '0:30',
+                            cover: data.coverUrl || '',
+                            videoUrl: data.videoUrl,
+                            audioUrl: data.musicUrl || data.videoUrl,
+                            hdVideoUrl: data.videoUrl
+                        };
                     }
-                });
-                
-                const data = await response.json();
-                
-                if (!data.links) {
-                    throw new Error("Tidak dapat memproses video");
+                } else if (apiName === 'TikTok Downloader API') {
+                    if (data.video && data.video.noWatermark) {
+                        return {
+                            title: data.title || 'Video TikTok',
+                            author: data.author || 'Unknown',
+                            duration: formatDuration(data.duration),
+                            cover: data.cover || '',
+                            videoUrl: data.video.noWatermark,
+                            audioUrl: data.music || data.video.noWatermark,
+                            hdVideoUrl: data.video.noWatermark
+                        };
+                    }
+                } else if (apiName === 'TikTok Video Info') {
+                    if (data.data && data.data.play) {
+                        return {
+                            title: data.data.title || 'Video TikTok',
+                            author: data.data.author?.nickname || 'Unknown',
+                            duration: formatDuration(data.data.duration),
+                            cover: data.data.cover || '',
+                            videoUrl: data.data.play,
+                            audioUrl: data.data.music || data.data.play,
+                            hdVideoUrl: data.data.hdplay || data.data.play
+                        };
+                    }
                 }
                 
-                // Cari link video dengan kualitas terbaik
-                const videoLinks = Object.values(data.links);
-                const bestQualityUrl = videoLinks[0] || "";
-                
-                return {
-                    title: data.title || "Video TikTok",
-                    author: data.author || "Unknown",
-                    duration: formatDuration(data.duration || 0),
-                    videoUrl: bestQualityUrl,
-                    hdVideoUrl: bestQualityUrl,
-                    audioUrl: bestQualityUrl,
-                    qualities: [
-                        { label: "HD", value: "hd", url: bestQualityUrl },
-                        { label: "SD", value: "sd", url: bestQualityUrl }
-                    ]
-                };
+                throw new Error('Format data tidak dikenali');
+            }
+            
+            // Fungsi untuk format durasi
+            function formatDuration(seconds) {
+                if (!seconds) return '0:30';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
             }
             
             // Fungsi untuk menampilkan data video
             function displayVideoData(videoData) {
                 // Set informasi video
-                videoTitle.textContent = videoData.title;
-                videoAuthor.textContent = videoData.author;
-                videoDuration.textContent = videoData.duration;
-                videoQuality.textContent = "HD";
+                videoTitle.textContent = videoData.title || 'Video TikTok';
+                videoAuthor.textContent = videoData.author || 'Unknown';
+                videoDuration.textContent = videoData.duration || '0:30';
+                videoQuality.textContent = 'HD';
                 
-                // Set pratinjau video
+                // Set video player
                 if (videoData.videoUrl) {
                     videoPlaceholder.style.display = 'none';
                     videoPlayer.style.display = 'block';
@@ -787,8 +724,14 @@
                     
                     // Tambahkan event listener untuk error video
                     videoPlayer.addEventListener('error', function() {
+                        console.log('Video player error, menggunakan placeholder');
                         videoPlaceholder.style.display = 'flex';
                         videoPlayer.style.display = 'none';
+                    });
+                    
+                    // Tambahkan event listener untuk video berhasil dimuat
+                    videoPlayer.addEventListener('loadeddata', function() {
+                        console.log('Video berhasil dimuat');
                     });
                 } else {
                     videoPlaceholder.style.display = 'flex';
@@ -796,10 +739,14 @@
                 }
                 
                 // Set tautan download
-                if (videoData.hdVideoUrl) {
-                    downloadVideoBtn.href = videoData.hdVideoUrl;
+                if (videoData.videoUrl) {
+                    downloadVideoBtn.href = videoData.videoUrl;
                     downloadVideoBtn.download = `tiktok_${Date.now()}.mp4`;
                     downloadVideoBtn.classList.remove('disabled');
+                    
+                    // Tambahkan parameter untuk memaksa download
+                    downloadVideoBtn.setAttribute('download', '');
+                    downloadVideoBtn.setAttribute('target', '_blank');
                 } else {
                     downloadVideoBtn.href = '#';
                     downloadVideoBtn.classList.add('disabled');
@@ -810,77 +757,124 @@
                     downloadAudioBtn.href = videoData.audioUrl;
                     downloadAudioBtn.download = `tiktok_audio_${Date.now()}.mp3`;
                     downloadAudioBtn.classList.remove('disabled');
+                    
+                    // Tambahkan parameter untuk memaksa download
+                    downloadAudioBtn.setAttribute('download', '');
+                    downloadAudioBtn.setAttribute('target', '_blank');
                 } else {
-                    downloadAudioBtn.href = '#';
-                    downloadAudioBtn.classList.add('disabled');
+                    // Jika tidak ada URL audio khusus, gunakan video URL
+                    if (videoData.videoUrl) {
+                        downloadAudioBtn.href = videoData.videoUrl;
+                        downloadAudioBtn.download = `tiktok_audio_${Date.now()}.mp3`;
+                        downloadAudioBtn.classList.remove('disabled');
+                        downloadAudioBtn.setAttribute('download', '');
+                        downloadAudioBtn.setAttribute('target', '_blank');
+                    } else {
+                        downloadAudioBtn.href = '#';
+                        downloadAudioBtn.classList.add('disabled');
+                    }
                 }
                 
                 // Tampilkan opsi kualitas jika tersedia
-                if (videoData.qualities && videoData.qualities.length > 1) {
-                    qualityOptions.innerHTML = '';
-                    videoData.qualities.forEach(quality => {
-                        const qualityBtn = document.createElement('div');
-                        qualityBtn.className = `quality-btn ${quality.value === 'hd' ? 'active' : ''}`;
-                        qualityBtn.textContent = quality.label;
-                        qualityBtn.dataset.quality = quality.value;
-                        qualityBtn.dataset.url = quality.url;
-                        
-                        qualityBtn.addEventListener('click', function() {
-                            document.querySelectorAll('.quality-btn').forEach(btn => btn.classList.remove('active'));
+                if (videoData.hdVideoUrl && videoData.videoUrl !== videoData.hdVideoUrl) {
+                    qualityOptions.innerHTML = `
+                        <div class="quality-btn active" data-url="${videoData.hdVideoUrl}">HD</div>
+                        <div class="quality-btn" data-url="${videoData.videoUrl}">SD</div>
+                    `;
+                    qualityOptions.style.display = 'flex';
+                    
+                    // Tambahkan event listener untuk tombol kualitas
+                    document.querySelectorAll('.quality-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
                             this.classList.add('active');
                             
-                            currentQuality = this.dataset.quality;
-                            const selectedUrl = this.dataset.url;
-                            
-                            // Update video player
+                            const selectedUrl = this.getAttribute('data-url');
                             videoSource.src = selectedUrl;
                             videoPlayer.load();
-                            
-                            // Update download link
                             downloadVideoBtn.href = selectedUrl;
                             videoQuality.textContent = this.textContent;
                         });
-                        
-                        qualityOptions.appendChild(qualityBtn);
                     });
-                    
-                    qualityOptions.style.display = 'flex';
                 } else {
                     qualityOptions.style.display = 'none';
                 }
             }
             
-            // Fungsi untuk menampilkan error
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
-                resultSection.style.display = 'none';
-                loader.style.display = 'none';
+            // Event listener untuk tombol download
+            downloadBtn.addEventListener('click', async function() {
+                const url = tiktokUrlInput.value.trim();
                 
-                // Scroll ke error
-                errorMessage.scrollIntoView({ behavior: 'smooth' });
-            }
+                // Validasi URL
+                if (!url) {
+                    showError('Harap masukkan URL video TikTok');
+                    return;
+                }
+                
+                if (!isValidTikTokUrl(url)) {
+                    showError('URL harus dari TikTok (contoh: https://www.tiktok.com/@username/video/123456789)');
+                    return;
+                }
+                
+                // Sembunyikan error jika ada
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+                resultSection.style.display = 'none';
+                
+                // Tampilkan loader
+                loader.style.display = 'block';
+                downloadBtn.disabled = true;
+                
+                try {
+                    // Bersihkan URL
+                    const cleanUrl = cleanTikTokUrl(url);
+                    
+                    // Dapatkan data video dari API
+                    const videoData = await fetchVideoFromAPI(cleanUrl);
+                    
+                    // Sembunyikan loader
+                    loader.style.display = 'none';
+                    
+                    // Tampilkan data video
+                    displayVideoData(videoData);
+                    
+                    // Tampilkan section hasil
+                    resultSection.style.display = 'block';
+                    showSuccess('Video berhasil diproses! Pilih kualitas dan format download di bawah.');
+                    
+                    // Scroll ke hasil
+                    setTimeout(() => {
+                        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError(`Gagal memproses video: ${error.message}. Coba URL yang berbeda atau coba lagi nanti.`);
+                } finally {
+                    downloadBtn.disabled = false;
+                }
+            });
             
-            // Fungsi validasi URL TikTok
-            function isValidTikTokUrl(url) {
-                const tiktokPattern = /^(https?:\/\/)?(www\.|vm\.|vt\.)?tiktok\.com\/.+/;
-                const tiktokShortPattern = /^(https?:\/\/)?(vt\.tiktok\.com\/).+/;
-                return tiktokPattern.test(url) || tiktokShortPattern.test(url);
-            }
+            // Event listener untuk tombol download (untuk memastikan download berjalan)
+            downloadVideoBtn.addEventListener('click', function(e) {
+                if (this.classList.contains('disabled')) {
+                    e.preventDefault();
+                    showError('Link download tidak tersedia. Silakan proses ulang video.');
+                } else {
+                    console.log('Download video dimulai...');
+                    // Biarkan link berfungsi normal
+                }
+            });
             
-            // Fungsi untuk mengekstrak username dari URL
-            function extractUsername(url) {
-                const match = url.match(/@([^\/]+)/);
-                return match ? match[1] : null;
-            }
-            
-            // Fungsi untuk format durasi
-            function formatDuration(seconds) {
-                if (!seconds) return "0:00";
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-            }
+            downloadAudioBtn.addEventListener('click', function(e) {
+                if (this.classList.contains('disabled')) {
+                    e.preventDefault();
+                    showError('Link audio tidak tersedia. Silakan proses ulang video.');
+                } else {
+                    console.log('Download audio dimulai...');
+                    // Biarkan link berfungsi normal
+                }
+            });
             
             // Izinkan enter untuk memicu download
             tiktokUrlInput.addEventListener('keyup', function(e) {
@@ -889,11 +883,21 @@
                 }
             });
             
-            // Contoh video untuk demo (jika tidak ada URL yang dimasukkan)
-            window.addEventListener('load', function() {
-                // Set contoh URL untuk testing
-                tiktokUrlInput.value = "https://www.tiktok.com/@tiktok/video/7156033831819635974";
-            });
+            // Contoh URL untuk testing
+            tiktokUrlInput.value = 'https://www.tiktok.com/@tiktok/video/7156033831819635974';
+            
+            // Tambahkan contoh URL lainnya untuk placeholder
+            const exampleUrls = [
+                'https://www.tiktok.com/@tiktok/video/7156033831819635974',
+                'https://www.tiktok.com/@willsmith/video/7156039167568317742',
+                'https://www.tiktok.com/@khaby.lame/video/7156039167568317742'
+            ];
+            
+            let urlIndex = 0;
+            setInterval(() => {
+                tiktokUrlInput.placeholder = `Contoh: ${exampleUrls[urlIndex]}`;
+                urlIndex = (urlIndex + 1) % exampleUrls.length;
+            }, 3000);
         });
     </script>
 </body>
